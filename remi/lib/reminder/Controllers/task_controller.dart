@@ -1,0 +1,26 @@
+import 'package:get/get.dart';
+import 'package:remi/reminder/DB/db_helper.dart';
+
+import '../models/task.dart';
+
+class TaskController extends GetxController{
+
+  var taskList = <Task>[].obs;
+
+  Future<int> addTask({Task? task}) async{
+    return await DBHelper.insert(task);
+  }
+  //Get the data from the table
+  void getTasks() async{
+    List<Map<String, dynamic>> tasks = await DBHelper.query();
+    taskList.assignAll(tasks.map((data) => Task.fromJson(data)).toList());
+  }
+
+  void delete(Task task){
+   DBHelper.delete(task);
+  }
+  //Task Complete Method
+  // void markTaskCompleted(int id)async{
+  //   await DBHelper.update(id);
+  // }
+}
